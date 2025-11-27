@@ -1,0 +1,25 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+void dfsUtil(int node, vector<int> adj[], vector<int>& vis) {
+    vis[node] = 1;
+    cout << node << " ";
+    for (auto x : adj[node])
+        if (!vis[x]) dfsUtil(x, adj, vis);
+}
+
+void dfs(int V, vector<int> adj[], int start) {
+    vector<int> vis(V, 0);
+    dfsUtil(start, adj, vis);
+}
+
+int main() {
+    int V = 5;
+    vector<int> adj[V];
+    adj[0] = {1, 2};
+    adj[1] = {0, 3};
+    adj[2] = {0, 4};
+    adj[3] = {1};
+    adj[4] = {2};
+    dfs(V, adj, 0);
+}
