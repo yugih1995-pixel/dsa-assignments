@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class PriorityQueue {
+    vector<int> heap;
+public:
+    void push(int x) {
+        heap.push_back(x);
+        int i = heap.size() - 1;
+        while (i > 0 && heap[(i - 1) / 2] < heap[i]) {
+            swap(heap[i], heap[(i - 1) / 2]);
+            i = (i - 1) / 2;
+        }
+    }
+    void pop() {
+        if (heap.empty()) return;
+        heap[0] = heap.back();
+        heap.pop_back();
+        heapify(0);
+    }
+    void heapify(int i) {
+        int n = heap.size();
+        int largest = i;
+        int l = 2 * i + 1, r = 2 * i + 2;
+        if (l < n && heap[l] > heap[largest]) largest = l;
+        if (r < n && heap[r] > heap[largest]) largest = r;
+        if (largest != i) {
+            swap(heap[i], heap[largest]);
+            heapify(largest);
+        }
+    }
+    int top() {
+        return heap.empty() ? -1 : heap[0];
+    }
+    bool empty() {
+        return heap.empty();
+    }
+    void display() {
+        for (int x : heap) cout << x << " ";
+        cout << endl;
+    }
+};
+
+int main() {
+    PriorityQueue pq;
+    pq.push(10);
+    pq.push(30);
+    pq.push(20);
+    pq.push(50);
+    pq.display();
+    cout << pq.top() << endl;
+    pq.pop();
+    pq.display();
+}
