@@ -1,0 +1,91 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+struct Node {
+    int data;
+    Node *next, *prev;
+    Node(int d) : data(d), next(NULL), prev(NULL) {}
+};
+
+class DoublyList {
+public:
+    Node* head = NULL;
+    void insertFirst(int x) {
+        Node* n = new Node(x);
+        n->next = head;
+        if (head) head->prev = n;
+        head = n;
+    }
+    void insertLast(int x) {
+        Node* n = new Node(x);
+        if (!head) head = n;
+        else {
+            Node* t = head;
+            while (t->next) t = t->next;
+            t->next = n;
+            n->prev = t;
+        }
+    }
+    void insertAfter(int val, int x) {
+        Node* t = head;
+        while (t && t->data != val) t = t->next;
+        if (!t) return;
+        Node* n = new Node(x);
+        n->next = t->next;
+        n->prev = t;
+        if (t->next) t->next->prev = n;
+        t->next = n;
+    }
+    void insertBefore(int val, int x) {
+        Node* t = head;
+        while (t && t->data != val) t = t->next;
+        if (!t) return;
+        Node* n = new Node(x);
+        n->next = t;
+        n->prev = t->prev;
+        if (t->prev) t->prev->next = n;
+        else head = n;
+        t->prev = n;
+    }
+    void deleteNode(int val) {
+        Node* t = head;
+        while (t && t->data != val) t = t->next;
+        if (!t) return;
+        if (t->prev) t->prev->next = t->next;
+        else head = t->next;
+        if (t->next) t->next->prev = t->prev;
+        delete t;
+    }
+    bool search(int val) {
+        Node* t = head;
+        while (t) {
+            if (t->data == val) return true;
+            t = t->next;
+        }
+        return false;
+    }
+    void display() {
+        Node* t = head;
+        while (t) {
+            cout << t->data << " ";
+            t = t->next;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    DoublyList l;
+    int ch, val, x;
+    while (true) {
+        cin >> ch;
+        if (ch == 1) { cin >> x; l.insertFirst(x); }
+        else if (ch == 2) { cin >> x; l.insertLast(x); }
+        else if (ch == 3) { cin >> val >> x; l.insertAfter(val, x); }
+        else if (ch == 4) { cin >> val >> x; l.insertBefore(val, x); }
+        else if (ch == 5) { cin >> val; l.deleteNode(val); }
+        else if (ch == 6) { cin >> val; cout << (l.search(val) ? "Found" : "Not Found") << endl; }
+        else if (ch == 7) l.display();
+        else break;
+    }
+}
